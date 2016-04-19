@@ -64,7 +64,7 @@ BODY and push the result into cache and return it."
        (op/update-cache-item ,key (funcall (lambda () ,@body)))))
 
 (defun op/get-category-name (category)
-  "Return the name of the CATEGORY based on op/category-config-alist :label property. 
+  "Return the name of the CATEGORY based on op/category-config-alist :label property.
 Default to capitalized CATEGORY name if no :label property found."
   (let* ((config (cdr (or (assoc category op/category-config-alist)
                           (assoc "blog" op/category-config-alist)))))
@@ -139,27 +139,6 @@ similar to `op/render-header'. `op/highlight-render' is `js' or `htmlize'."
     (file-to-string (concat (op/get-template-dir)
                             (or template "post.mustache"))))
    (or param-table
-       (ht ("title" (or (op/read-org-option "TITLE") "Untitled"))
-           ("content"
-            (cond ((eq op/highlight-render 'js)
-                   (progn
-                     (cl-letf (((symbol-function'org-html-fontify-code)
-                                #'(lambda (code lang)
-                                    (when code
-                                      (org-html-encode-plain-text code)))))
-                       (org-export-as'html nil nil t nil))))
-                  ((eq op/highlight-render 'htmlize)
-                   (org-export-as'html nil nil t nil))))))))
-
-(defun op/render-footer (&optional param-table)
-  "Render the footer on each page. PARAM-TABLE is similar to
-`op/render-header'."
-  (mustache-render
-   (op/get-cache-create
-    :footer-template
-    (message "Read footer.mustache from file")
-    (file-to-string (concat (op/get-template-dir) "footer.mustache")))
-   (or param-table
        (let* ((filename (buffer-file-name))
               (title (or (op/read-org-option "TITLE") "Untitled"))
               (date (fix-timestamp-string
@@ -211,10 +190,35 @@ similar to `op/render-header'. `op/highlight-render' is `js' or `htmlize'."
              ("google-analytics" (and (boundp 'op/personal-google-analytics-id)
                                       op/personal-google-analytics-id))
              ("google-analytics-id" op/personal-google-analytics-id)
-             ("creator-info" op/html-creator-string)
-             ("email" (confound-email (or (op/read-org-option "EMAIL")
-                                          user-mail-address
-                                          "Unknown Email"))))))))
+             ("title" (or (op/read-org-option "TITLE") "Untitled"))
+             ("content"
+              (cond ((eq op/highlight-render 'js)
+                     (progn
+                       (cl-letf (((symbol-function'org-html-fontify-code)
+                                  #'(lambda (code lang)
+                                      (when code
+                                        (org-html-encode-plain-text code)))))
+                         (org-export-as'html nil nil t nil))))
+                    ((eq op/highlight-render 'htmlize)
+                     (org-export-as'html nil nil t nil)))))))))
+
+(defun op/render-footer (&optional param-table)
+  "Render the footer on each page. PARAM-TABLE is similar to
+`op/render-header'."
+  (mustache-render
+   (op/get-cache-create
+    :footer-template
+    (message "Read footer.mustache from file")
+    (file-to-string (concat (op/get-template-dir) "footer.mustache")))
+   (or param-table
+       (ht
+        ("creator-info" op/html-creator-string)
+        ("author" (or (op/read-org-option "AUTHOR")
+                           user-full-name
+                           "Unknown Author"))
+        ("email" (confound-email (or (op/read-org-option "EMAIL")
+                                     user-mail-address
+                                     "Unknown Email")))))))
 
 ;;; this function is deprecated
 (defun op/update-default-template-parameters ()
