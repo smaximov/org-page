@@ -71,15 +71,15 @@ Default to capitalized CATEGORY name if no :label property found."
     (or (plist-get config :label)
         (capitalize category))))
 
-(defun op/render-header (&optional param-table)
-  "Render the header on each page. PARAM-TABLE is the hash table from mustache
+(defun op/render-head (&optional param-table)
+  "Render the head on each page. PARAM-TABLE is the hash table from mustache
 to render the template. If it is not set or nil, this function will try to build
 a hash table accordint to current buffer."
   (mustache-render
    (op/get-cache-create
-    :header-template
-    (message "Read header.mustache from file")
-    (file-to-string (concat (op/get-template-dir) "header.mustache")))
+    :head-template
+    (message "Read head.mustache from file")
+    (file-to-string (concat (op/get-template-dir) "head.mustache")))
    (or param-table
        (ht ("page-title" (concat (or (op/read-org-option "TITLE") "Untitled")
                                  " - " op/site-main-title))
@@ -129,7 +129,7 @@ render from a default hash table."
 (defun op/render-content (&optional template param-table)
   "Render the content on each page. TEMPLATE is the template name for rendering,
 if it is not set of nil, will use default post.mustache instead. PARAM-TABLE is
-similar to `op/render-header'. `op/highlight-render' is `js' or `htmlize'."
+similar to `op/render-head'. `op/highlight-render' is `js' or `htmlize'."
   (mustache-render
    (op/get-cache-create
     (if template
@@ -204,7 +204,7 @@ similar to `op/render-header'. `op/highlight-render' is `js' or `htmlize'."
 
 (defun op/render-footer (&optional param-table)
   "Render the footer on each page. PARAM-TABLE is similar to
-`op/render-header'."
+`op/render-head'."
   (mustache-render
    (op/get-cache-create
     :footer-template

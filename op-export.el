@@ -173,7 +173,7 @@ ancestor directory of assets directory %s." pub-root-dir assets-dir))
               (setq post-content
                     (replace-regexp-in-string
                      (regexp-quote asset-path) converted-path post-content))))))
-      (setq component-table (ht ("header" (op/render-header))
+      (setq component-table (ht ("head" (op/render-head))
                                 ("nav" (op/render-navigation-bar))
                                 ("content" post-content)
                                 ("footer" (op/render-footer))))
@@ -328,8 +328,8 @@ file attribute property lists. PUB-BASE-DIR is the root publication directory."
               (message "Read container.mustache from file")
               (file-to-string (concat (op/get-template-dir)
                                       "container.mustache")))
-             (ht ("header"
-                  (op/render-header
+             (ht ("head"
+                  (op/render-head
                    (ht ("page-title" (concat (op/get-category-name (car cat-list))
                                              " Index - "
                                              op/site-main-title))
@@ -384,8 +384,8 @@ publication directory."
        :container-template
        (message "Read container.mustache from file")
        (file-to-string (concat (op/get-template-dir) "container.mustache")))
-      (ht ("header"
-           (op/render-header
+      (ht ("head"
+           (op/render-head
             (ht ("page-title" (concat "Index - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
           ("nav" (op/render-navigation-bar))
@@ -440,8 +440,8 @@ is the root publication directory."
        :container-template
        (message "Read container.mustache from file")
        (file-to-string (concat (op/get-template-dir) "container.mustache")))
-      (ht ("header"
-           (op/render-header
+      (ht ("head"
+           (op/render-head
             (ht ("page-title" (concat "About - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
           ("nav" (op/render-navigation-bar))
@@ -491,8 +491,8 @@ TODO: improve this function."
        :container-template
        (message "Read container.mustache from file")
        (file-to-string (concat (op/get-template-dir) "container.mustache")))
-      (ht ("header"
-           (op/render-header
+      (ht ("head"
+           (op/render-head
             (ht ("page-title" (concat "Tag Index - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
           ("nav" (op/render-navigation-bar))
@@ -556,8 +556,8 @@ TODO: improve this function."
             (message "Read container.mustache from file")
             (file-to-string (concat (op/get-template-dir)
                                     "container.mustache")))
-           (ht ("header"
-                (op/render-header
+           (ht ("head"
+                (op/render-head
                  (ht ("page-title" (concat "Tag: " (car tag-list)
                                            " - " op/site-main-title))
                      ("author" (or user-full-name "Unknown Author")))))
@@ -616,8 +616,8 @@ TODO: improve this function."
        :container-template
        (message "Read container.mustache from file")
        (file-to-string (concat (op/get-template-dir) "container.mustache")))
-      (ht ("header"
-           (op/render-header
+      (ht ("head"
+           (op/render-head
             (ht ("page-title" (concat "Author Index - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
           ("nav" (op/render-navigation-bar))
@@ -658,8 +658,8 @@ TODO: improve this function."
             (message "Read container.mustache from file")
             (file-to-string (concat (op/get-template-dir)
                                     "container.mustache")))
-           (ht ("header"
-                (op/render-header
+           (ht ("head"
+                (op/render-head
                  (ht ("page-title" (concat "Author: " (car author-list)
                                            " - " op/site-main-title))
                      ("author" (or user-full-name "Unknown Author")))))
