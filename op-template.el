@@ -88,20 +88,20 @@ a hash table accordint to current buffer."
            ("description" (op/read-org-option "DESCRIPTION"))
            ("keywords" (op/read-org-option "KEYWORDS"))))))
 
-(defun op/render-navigation-bar (&optional param-table)
-  "Render the navigation bar on each page. it will be read firstly from
+(defun op/render-header (&optional param-table)
+  "Render the page header on each page. it will be read firstly from
 `op/item-cache', if there is no cached content, it will be rendered
 and pushed into cache from template. PARAM-TABLE is the hash table for mustache
 to render the template. If it is not set or nil, this function will try to
 render from a default hash table."
   (op/get-cache-create
-   :nav-bar-html
-   (message "Render navigation bar from template")
+   :header-html
+   (message "Render page header from template")
    (mustache-render
     (op/get-cache-create
-     :nav-bar-template
-     (message "Read nav.mustache from file")
-     (file-to-string (concat (op/get-template-dir) "nav.mustache")))
+     :header-template
+     (message "Read header.mustache from file")
+     (file-to-string (concat (op/get-template-dir) "header.mustache")))
     (or param-table
         (ht-merge (ht ("site-main-title" op/site-main-title)
                       ("site-sub-title" op/site-sub-title)

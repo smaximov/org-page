@@ -174,7 +174,7 @@ ancestor directory of assets directory %s." pub-root-dir assets-dir))
                     (replace-regexp-in-string
                      (regexp-quote asset-path) converted-path post-content))))))
       (setq component-table (ht ("head" (op/render-head))
-                                ("nav" (op/render-navigation-bar))
+                                ("header" (op/render-header))
                                 ("content" post-content)
                                 ("footer" (op/render-footer))))
       (plist-put attr-plist :description (or (op/read-org-option "DESCRIPTION")
@@ -334,7 +334,7 @@ file attribute property lists. PUB-BASE-DIR is the root publication directory."
                                              " Index - "
                                              op/site-main-title))
                        ("author" (or user-full-name "Unknown Author")))))
-                 ("nav" (op/render-navigation-bar))
+                 ("header" (op/render-header))
                  ("content"
                   (op/render-content
                    "category-index.mustache"
@@ -388,7 +388,7 @@ publication directory."
            (op/render-head
             (ht ("page-title" (concat "Index - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
-          ("nav" (op/render-navigation-bar))
+          ("header" (op/render-header))
           ("content"
            (op/render-content
             "index.mustache"
@@ -444,7 +444,7 @@ is the root publication directory."
            (op/render-head
             (ht ("page-title" (concat "About - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
-          ("nav" (op/render-navigation-bar))
+          ("header" (op/render-header))
           ("content"
            (op/render-content
             "about.mustache"
@@ -495,7 +495,7 @@ TODO: improve this function."
            (op/render-head
             (ht ("page-title" (concat "Tag Index - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
-          ("nav" (op/render-navigation-bar))
+          ("header" (op/render-header))
           ("content"
            (op/render-content
             "tag-index.mustache"
@@ -561,7 +561,7 @@ TODO: improve this function."
                  (ht ("page-title" (concat "Tag: " (car tag-list)
                                            " - " op/site-main-title))
                      ("author" (or user-full-name "Unknown Author")))))
-               ("nav" (op/render-navigation-bar))
+               ("header" (op/render-header))
                ("content"
                 (op/render-content
                  "tag.mustache"
@@ -620,7 +620,7 @@ TODO: improve this function."
            (op/render-head
             (ht ("page-title" (concat "Author Index - " op/site-main-title))
                 ("author" (or user-full-name "Unknown Author")))))
-          ("nav" (op/render-navigation-bar))
+          ("header" (op/render-header))
           ("content"
            (op/render-content
             "author-index.mustache"
@@ -663,7 +663,7 @@ TODO: improve this function."
                  (ht ("page-title" (concat "Author: " (car author-list)
                                            " - " op/site-main-title))
                      ("author" (or user-full-name "Unknown Author")))))
-               ("nav" (op/render-navigation-bar))
+               ("header" (op/render-header))
                ("content"
                 (op/render-content
                  "author.mustache"
