@@ -29,11 +29,21 @@
 (describe "Custom HTML export backend"
   (describe "Timestamp transcoder"
 
-    ;; Set UTC as the local time zone
-    (set-time-zone-rule t)
+    (before-each
+      ;; Set UTC as the local time zone
+      (set-time-zone-rule t))
+
+    (after-each
+      ;; Restore the default time zone
+      (set-time-zone-rule nil))
 
     (it "Should transcode timestamps as `<time>` elements"
       (expect (org-export-string-as "<2016-05-26>" 'op/html t nil)
+              :to-equal "<p>\n<time datetime=\"2016-05-26T00:00:00.000Z\">2016-05-26</time></p>\n"))
+
+    (it "Should respect locale-specific date format strings"
+      (expect (org-export-string-as "<2016-05-26>" 'op/html t
+                                    '(:locale (:date-format "%d.%m.%Y")))
               :to-equal "<p>\n<time datetime=\"2016-05-26T00:00:00.000Z\">26.05.2016</time></p>\n"))))
 
 (provide 'test-html)

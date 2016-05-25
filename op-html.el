@@ -27,21 +27,28 @@
 
 (require 'ox)
 
-;;; TODO: write tests
-
 ;; FIXME: provide a proper format string
 (defconst op/datetime-format "%Y-%m-%dT%H:%M:%S.%3NZ"
   "A format string to represent UTC time conforming to RFC 3339.")
 
-;; TODO: allow to override using locale-specific settings
-(defconst op/default-date-format "%d.%m.%Y")
+(defconst op/default-date-format "%Y-%m-%d")
+
+(defun op/get-locale (plist)
+  "Get locale information from PLIST."
+  (plist-get plist :locale))
+
+(defun op/get-date-format (locale)
+  "Get a date format specific to the LOCALE."
+  (plist-get locale :date-format))
 
 (defun op/html-timestamp (timestamp contents info)
   "Transcode a TIMESTAMP object from Org to HTML.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
   (ignore contents info)
-  (let ((datetime (org-timestamp-format timestamp op/datetime-format nil t))
-        (date (org-timestamp-format timestamp op/default-date-format nil t)))
+  (let* ((datetime (org-timestamp-format timestamp op/datetime-format nil t))
+         (date-format (or (op/get-date-format (op/get-locale info))
+                          op/default-date-format))
+         (date (org-timestamp-format timestamp date-format nil t)))
     (format "<time datetime=\"%s\">%s</time>" datetime date)))
 
 (org-export-define-derived-backend 'op/html 'html
