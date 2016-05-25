@@ -5,3 +5,4 @@ temp.org
 example/pub
 *~
 *.elc
+.cask
