@@ -12,3 +12,6 @@
 (depends-on "mustache" "0.22")
 (depends-on "org" "8.0")
 (depends-on "simple-httpd" "1.4.6")
+
+(development
+ (depends-on "buttercup"))
