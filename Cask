@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(package "org-page" "0.5"
+(package "org-page" "0.7"
          "a static site generator based on org mode.")
 
 (depends-on "cl-lib" "0.5")
