@@ -53,7 +53,7 @@
 (require 'op-watch)
 (require 'simple-httpd)
 
-(defconst org-page-version "0.5")
+(defconst org-page-version "0.7")
 
 (defun op/do-publication (&optional force-all
                                     base-git-commit pub-base-dir
