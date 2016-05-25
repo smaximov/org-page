@@ -33,6 +33,7 @@
 (require 'op-vars)
 (require 'op-git)
 
+(require 'op-html)
 
 (defun op/get-template-dir ()
   "Return the template directory, it is determined by variable
@@ -194,13 +195,13 @@ similar to `op/render-head'. `op/highlight-render' is `js' or `htmlize'."
              ("content"
               (cond ((eq op/highlight-render 'js)
                      (progn
-                       (cl-letf (((symbol-function'org-html-fontify-code)
+                       (cl-letf (((symbol-function 'org-html-fontify-code)
                                   #'(lambda (code lang)
                                       (when code
                                         (org-html-encode-plain-text code)))))
-                         (org-export-as'html nil nil t nil))))
+                         (org-export-as 'op/html nil nil t nil))))
                     ((eq op/highlight-render 'htmlize)
-                     (org-export-as'html nil nil t nil)))))))))
+                     (org-export-as 'op/html nil nil t nil)))))))))
 
 (defun op/render-footer (&optional param-table)
   "Render the footer on each page. PARAM-TABLE is similar to
