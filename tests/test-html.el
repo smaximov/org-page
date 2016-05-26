@@ -29,11 +29,11 @@
 (describe "Custom HTML export backend"
   (describe "Timestamp transcoder"
 
-    (before-each
+    (before-all
       ;; Set UTC as the local time zone
       (set-time-zone-rule t))
 
-    (after-each
+    (after-all
       ;; Restore the default time zone
       (set-time-zone-rule nil))
 
