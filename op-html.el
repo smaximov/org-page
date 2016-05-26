@@ -68,7 +68,8 @@
 (defun op/get-keywords (meta)
   "Read a list of keywords from metadata META."
   (-when-let (keywords (op/metadata-get :keywords meta))
-    (split-string keywords "[ ,]+" t)))
+    (save-match-data
+     (split-string keywords "[ ,]+" t))))
 
 (defun op/html-timestamp (timestamp contents info)
   "Transcode a TIMESTAMP object from Org to HTML.
