@@ -89,6 +89,7 @@ then the branch `op/repository-html-branch' will be pushed to remote repo."
   (op/verify-configuration)
   (setq op/item-cache nil)
   (let* ((orig-branch (op/git-branch-name op/repository-directory))
+         (org-html-doctype "html5")
          (to-repo (not (stringp pub-base-dir)))
          (store-dir (if to-repo "~/.op-tmp/" pub-base-dir)) ; TODO customization
          (store-dir-abs (file-name-as-directory (expand-file-name store-dir)))
