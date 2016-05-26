@@ -25,6 +25,7 @@
 
 ;;; Code:
 
+(require 'dash)
 (require 'ox)
 
 ;; FIXME: provide a proper format string
@@ -41,6 +42,34 @@
   "Get a date format specific to the LOCALE."
   (plist-get locale :date-format))
 
+(defun op/read-org-metadata ()
+  "Read the current buffer's metadata."
+  (org-export--get-inbuffer-options 'op/html))
+
+(defun op/metadata-get (key meta)
+  "Get a value denoted by KEY from metadata META."
+  (plist-get meta key))
+
+(defun op/get-tags (meta)
+  "Read a list of tags from metadata META."
+  (-when-let (tags (op/metadata-get :tags meta))
+    (save-match-data
+      (split-string tags "[ ,]+" t))))
+
+(defun op/get-uri (meta)
+  "Get a uri slug from metadata META."
+  (op/metadata-get :uri meta))
+
+(defun op/draft? (meta)
+  "Determine if an Org entry is a draft using its metadata META."
+  (-when-let (draft (op/metadata-get :draft meta))
+    (not (equal draft "nil"))))
+
+(defun op/get-keywords (meta)
+  "Read a list of keywords from metadata META."
+  (-when-let (keywords (op/metadata-get :keywords meta))
+    (split-string keywords "[ ,]+" t)))
+
 (defun op/html-timestamp (timestamp contents info)
   "Transcode a TIMESTAMP object from Org to HTML.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
@@ -52,7 +81,11 @@ CONTENTS is nil.  INFO is a plist used as a communication channel."
     (format "<time datetime=\"%s\">%s</time>" datetime date)))
 
 (org-export-define-derived-backend 'op/html 'html
-  :translate-alist '((timestamp . op/html-timestamp)))
+  :translate-alist '((timestamp . op/html-timestamp))
+  :options-alist '((:tags "TAGS" nil nil t)
+                   ;; TODO: change URI to SLUG, maybe?
+                   (:uri "URI" nil nil t)
+                   (:draft "DRAFT" nil nil t)))
 
 (provide 'op-html)
 ;;; op-html.el ends here

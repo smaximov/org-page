@@ -44,7 +44,36 @@
     (it "Should respect locale-specific date format strings"
       (expect (org-export-string-as "<2016-05-26>" 'op/html t
                                     '(:locale (:date-format "%d.%m.%Y")))
-              :to-equal "<p>\n<time datetime=\"2016-05-26T00:00:00.000Z\">26.05.2016</time></p>\n"))))
+              :to-equal "<p>\n<time datetime=\"2016-05-26T00:00:00.000Z\">26.05.2016</time></p>\n")))
+
+  ;; TODO: move to a more appropriate location
+  (describe "Metadata"
+    (it "Should provide extra Org options"
+      (with-temp-buffer
+        (insert "
+#+TITLE:       Some title
+#+AUTHOR:      Some author
+#+EMAIL:       user@example.com
+#+DATE:        2016-05-20 Fri
+#+URI:         /category/%y/%m/%d/name
+#+KEYWORDS:    keyword1, keyword2
+#+TAGS:        tag1, tag2
+#+LANGUAGE:    en
+#+DRAFT:       yes
+#+OPTIONS:     H:3 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
+#+DESCRIPTION: Some description
+
+Some text
+")
+        (let ((meta (op/read-org-metadata)))
+          (expect (op/get-tags meta)
+                  :to-equal '("tag1" "tag2"))
+          (expect (op/get-uri meta)
+                  :to-equal "/category/%y/%m/%d/name")
+          (expect (op/draft? meta)
+                  :to-be-truthy)
+          (expect (op/get-keywords meta)
+                  :to-equal '("keyword1" "keyword2")))))))
 
 (provide 'test-html)
 ;;; test-html.el ends here
